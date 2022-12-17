@@ -53,7 +53,7 @@ public class ContratDAO {
 				Contrat contrat = new Contrat(rs.getInt("idContrat"),client,employe,rs.getDate("dateContrat"),rs.getString("description"));
 				Commande commande = new Commande(rs.getInt("idCommande"),contrat,meuble,rs.getInt("quantite"));
 				
-				// On verifie si l'entreprise est deja dans la liste, si oui, on a juste un numero de telephone a ajouter a la liste de numero de telephone
+				// On verifie si le contrat est déjà dans la liste, si oui on ajoute la commande à la liste de commande, sinon on ajoute le contrat.
 				boolean res = false;
 				int i = 0;
 				int indexCommande = 0;
@@ -66,9 +66,11 @@ public class ContratDAO {
 				}
 				if (res) {
 					lc.get(indexCommande).getCommandes().add(commande);
+					//Permet de calculer le prix total des commandes
 					lc.get(indexCommande).setPrixTotal(lc.get(indexCommande).getPrixTotal()+meuble.getPrix()*commande.getQuantite());
 				} else {
 					contrat.getCommandes().add(commande);
+					//Prix d'une commande
 					contrat.setPrixTotal(meuble.getPrix()*commande.getQuantite());
 					lc.add(contrat);
 				}

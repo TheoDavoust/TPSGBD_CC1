@@ -34,7 +34,7 @@ public class ContratDAO {
             if(rs.next())
             	c.setIdContrat(rs.getInt(1));
             else
-            	throw new Exception("L'insertion du contrat s'est mal passÃ©");
+            	throw new Exception("L'insertion du contrat s'est mal passée");
             
             ps.close();
         }catch (SQLException e) {

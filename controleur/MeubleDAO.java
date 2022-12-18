@@ -71,7 +71,7 @@ public class MeubleDAO {
 			ResultSet rs = ps.executeQuery();
 			
 			if(!rs.next())
-				throw new Exception("Aucun meuble ne correcpond Ã  ce code");
+				throw new Exception("Aucun meuble ne correcpond à ce code");
 			
 			Fournisseur f = new Fournisseur(rs.getInt("idFournisseur"), rs.getString("nom"), rs.getString("ville"));
 			

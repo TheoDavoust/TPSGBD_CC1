@@ -36,17 +36,17 @@ public class Application {
 		
 		choix_affichage = new HashMap<Integer, String>() {{
 			put(1, "clients");
-			put(2, "contrats liÃ©s Ã  un client");
+			put(2, "contrats liés à  un client");
 			put(3, "meubles d'une certaines longueur");
 			put(4, "meubles d'une certaines largeur");
 		}};
 		
 		choix_ajout = new HashMap<Integer, String>() {{
-			put(1, "tÃ©lÃ©phone");
+			put(1, "téléphone");
 			put(2, "client");
 			put(3, "particulier");
 			put(4, "entreprise");
-			put(5, "employÃ©");
+			put(5, "employé");
 			put(6, "fournisseur");
 			put(7, "contrat");
 		}};
@@ -67,16 +67,22 @@ public class Application {
 			int choix2 = scan.nextInt();
 			switch (choix2) {
 			case 1:
+				System.out.println("Not yet implemented");
 				break;
 			case 2:
+				System.out.println("Not yet implemented");
 				break;
 			case 3:
+				System.out.println("Not yet implemented");
 				break;
 			case 4:
+				System.out.println("Not yet implemented");
 				break;
 			case 5:
+				System.out.println("Not yet implemented");
 				break;
 			case 6:
+				System.out.println("Not yet implemented");
 				break;
 			case 7:
 				System.out.println("Saisir le nom du client : ");
@@ -85,7 +91,7 @@ public class Application {
 				
 				Client c = GestionClient.extraireClient(clientNom);
 				
-				System.out.println("Saisir le nom de l'employÃ© : ");
+				System.out.println("Saisir le nom de l'employé : ");
 				String employeNom = Scan.next();
 				
 				Employe e = GestionEmploye.extraireEmploye(employeNom);
@@ -98,7 +104,7 @@ public class Application {
 				
 				Contrat contrat = new Contrat(0, c, e, d, desc);
 				
-				System.out.println("Saisir le nombre d'article : ");
+				System.out.println("Saisir le nombre de meuble à ajouter au contrat : ");
 				int i = Integer.parseInt(Scan.next());
 				
 				for(int j = 0; j < i; j++)
@@ -107,14 +113,14 @@ public class Application {
 					String code = Scan.next();
 					Meuble m = GestionMeuble.extraireMeuble(code);
 					
-					System.out.println("Saisir la quantitÃ© : ");
+					System.out.println("Saisir la quantité : ");
 					int qte = Scan.nextInt();
-					
+					contrat.setPrixTotal(contrat.getPrixTotal()+m.getPrix()*qte);
 					contrat.getCommandes().add(new Commande(0, contrat, m, qte));
 				}
 				
 				GestionContrat.insertContrat(contrat);
-				System.out.println("Contrat ajoutÃ© : \n");
+				System.out.println("Contrat ajouté : \n");
 				System.out.println(contrat);
 				Scan.close();
 				break;
@@ -169,7 +175,7 @@ public class Application {
 	}
 
 	private static void showMenuGlobal() {
-		choix_principales.forEach((key, value) -> System.out.println(String.format("%d : %s des donnÃ©es", key, value)));
+		choix_principales.forEach((key, value) -> System.out.println(String.format("%d : %s des données", key, value)));
 	}
 
 	private static void showMenuAjout() {

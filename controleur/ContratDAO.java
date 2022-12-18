@@ -18,16 +18,24 @@ import utility.Connection;
 
 public class ContratDAO {
 	
-    public static void insertContrat(Contrat c) {
+    public static void insertContrat(Contrat c) throws Exception {
         try {
             PreparedStatement ps;
             String sql = "INSERT INTO Contrat(idClient, idEmploye, dateContrat, description)"
                     + " VALUES (?, ?, ?, ?);";
-            ps = Connection.c.prepareStatement(sql);
+            ps = Connection.c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, c.getClient().getIdClient());
             ps.setInt(2, c.getEmploye().getIdEmploye());
             ps.setDate(3, c.getDateContrat());
             ps.setString(4, c.getDescription());
+            ps.executeUpdate();
+            
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next())
+            	c.setIdContrat(rs.getInt(1));
+            else
+            	throw new Exception("L'insertion du contrat s'est mal passÃ©");
+            
             ps.close();
         }catch (SQLException e) {
             e.printStackTrace();
@@ -42,7 +50,7 @@ public class ContratDAO {
 			ResultSet rs = s.executeQuery(" select * from client natural join contrat as c natural join commande natural join meuble as m join fournisseur as f join employe as e where client.nom='"+nom+"' and e.idEmploye=c.idEmploye and m.idFournisseur=f.idFournisseur;");
 			
 			if (!rs.next())
-				throw new Exception("Aucun client ne correspond à ce nom !");
+				throw new Exception("Aucun client ne correspond ï¿½ ce nom !");
 			
 			do  {
 				Client client = new Client(rs.getInt("idClient"),rs.getString("Client.nom"));
@@ -53,7 +61,7 @@ public class ContratDAO {
 				Contrat contrat = new Contrat(rs.getInt("idContrat"),client,employe,rs.getDate("dateContrat"),rs.getString("description"));
 				Commande commande = new Commande(rs.getInt("idCommande"),contrat,meuble,rs.getInt("quantite"));
 				
-				// On verifie si le contrat est déjà dans la liste, si oui on ajoute la commande à la liste de commande, sinon on ajoute le contrat.
+				// On verifie si le contrat est dï¿½jï¿½ dans la liste, si oui on ajoute la commande ï¿½ la liste de commande, sinon on ajoute le contrat.
 				boolean res = false;
 				int i = 0;
 				int indexCommande = 0;

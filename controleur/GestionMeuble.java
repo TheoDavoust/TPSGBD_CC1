@@ -13,5 +13,8 @@ public class GestionMeuble {
 	public static List<Meuble> extraireMeublesLargeur(float largeur) throws Exception {
 		return MeubleDAO.getInformationMeubleLargeur(largeur);
 	}
-
+	
+	public static Meuble extraireMeuble(String code) throws Exception {
+		return MeubleDAO.getMeuble(code);
+	}
 }

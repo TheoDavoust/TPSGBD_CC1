@@ -1,5 +1,6 @@
 package controleur;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -70,6 +71,25 @@ public class ClientDAO {
 			e.printStackTrace();
 		}
 		return le;
+	}
+	
+	public static Client getClient(String nom) throws Exception {
+		try {
+			String sql = "SELECT * from Client WHERE nom = ?;";
+			PreparedStatement ps = Connection.c.prepareStatement(sql);
+			ps.setString(1, nom);
+			ResultSet rs = ps.executeQuery();
+			
+			
+			if(!rs.next())
+				throw new Exception("Aucun client ne correcpond à ce nom");
+			
+			return new Client(rs.getInt("idClient"), rs.getString("nom"));
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }

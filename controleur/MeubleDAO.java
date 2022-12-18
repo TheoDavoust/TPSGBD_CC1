@@ -1,11 +1,13 @@
 package controleur;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Client;
 import model.Fournisseur;
 import model.Meuble;
 import utility.Connection;
@@ -20,7 +22,7 @@ public class MeubleDAO {
 			ResultSet rs = s.executeQuery("select * from Meuble natural join Fournisseur where longueur=" + longueur + ";");
 			
 			if (!rs.next())
-				throw new Exception("Aucun meuble n'a été trouvé avec cette longueur !");
+				throw new Exception("Aucun meuble n'a ï¿½tï¿½ trouvï¿½ avec cette longueur !");
 			
 			do  {
 				Fournisseur f = new Fournisseur(rs.getInt("idFournisseur"),rs.getString("nom"),rs.getString("ville"));
@@ -44,7 +46,7 @@ public class MeubleDAO {
 			ResultSet rs = s.executeQuery("select * from Meuble natural join Fournisseur where largeur=" + largeur + ";");
 			
 			if (!rs.next())
-				throw new Exception("Aucun meuble n'a été trouvé avec cette longueur !");
+				throw new Exception("Aucun meuble n'a ï¿½tï¿½ trouvï¿½ avec cette longueur !");
 			
 			do  {
 				Fournisseur f = new Fournisseur(rs.getInt("idFournisseur"),rs.getString("nom"),rs.getString("ville"));
@@ -60,4 +62,25 @@ public class MeubleDAO {
 		return lm;
 	}
 
+	
+	public static Meuble getMeuble(String code) throws Exception{
+		try {
+			String sql = "SELECT * from Meuble NATURAL JOIN Fournisseur WHERE code = ?;";
+			PreparedStatement ps = Connection.c.prepareStatement(sql);
+			ps.setString(1, code);
+			ResultSet rs = ps.executeQuery();
+			
+			if(!rs.next())
+				throw new Exception("Aucun meuble ne correcpond Ã  ce code");
+			
+			Fournisseur f = new Fournisseur(rs.getInt("idFournisseur"), rs.getString("nom"), rs.getString("ville"));
+			
+			return new Meuble(rs.getInt("idMeuble"), f, rs.getString("code"), rs.getFloat("prix"),
+					rs.getFloat("largeur"), rs.getFloat("longueur"));
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 }
